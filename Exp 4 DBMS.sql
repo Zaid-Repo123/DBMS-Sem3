@@ -21,22 +21,7 @@ SHOW GRANTS FOR 'zaid'@'localhost';
 -- Expected: GRANT USAGE ON *.* TO 'zaid'@'localhost'
 
 -- DCL 3) (root) Create the database and one table (if not present) and use it
-CREATE DATABASE IF NOT EXISTS hospital_management CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 USE hospital_management;
-
-CREATE TABLE IF NOT EXISTS Patient (
-  Patient_ID INT PRIMARY KEY,
-  Name VARCHAR(150),
-  Date_of_Birth DATE,
-  Gender ENUM('Male','Female','Other') DEFAULT 'Male',
-  Contact_Info VARCHAR(255),
-  Address VARCHAR(255)
-) ENGINE=InnoDB;
-
--- Seed a few rows only if table is empty (safe to run multiple times)
-INSERT INTO Patient (Patient_ID, Name, Date_of_Birth, Gender, Contact_Info, Address)
-SELECT 1, 'Arjun Singh', '1985-03-12', 'Male', 'arjun.singh@example.com', '45 MG Road, Delhi'
-WHERE NOT EXISTS (SELECT 1 FROM Patient WHERE Patient_ID = 1);
 
 -- DCL 4) (root) Give SELECT permission on the Patient table to the new user
 GRANT SELECT ON hospital_management.Patient TO 'zaid'@'localhost';
